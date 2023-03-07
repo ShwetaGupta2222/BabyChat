@@ -85,7 +85,7 @@ const ChangeProfile = ({ currentUser, handleCross }) => {
 const ChangePassword = ({ currentUser, handleCross }) => {
   const [display, setDisplay] = useState(false)
   const handleSubmit=()=>{ 
-    console.log("clicked")
+    console.log("clickeswsd")
   }
   return (
     <div className={`change-profile ${display ? "display" : ""} change-password`}>
