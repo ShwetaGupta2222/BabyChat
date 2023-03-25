@@ -11,17 +11,15 @@ import { getFirestore } from "firebase/firestore";
 //   appId: "1:366885059306:web:67726eacce7b0af51cb593",
 //   measurementId: "G-WVLYH6MSW0"
 // };
-
 const firebaseConfig = {
-  apiKey: "AIzaSyAdltUBkT4fIpOf1-gPYS-SRqHUYN2kasw",
-  authDomain: "chat-ed0e4.firebaseapp.com",
-  projectId: "chat-ed0e4",
-  storageBucket: "chat-ed0e4.appspot.com",
-  messagingSenderId: "233509235952",
-  appId: "1:233509235952:web:e52d9d2ad62f1a5e8ca635",
-  measurementId: "G-NKDQHRKL3G"
+  apiKey: "AIzaSyB7PuvHu2_YWH4GVhv45gg01REZQ0VQDe0",
+  authDomain: "shweta-chat-app-76bda.firebaseapp.com",
+  projectId: "shweta-chat-app-76bda",
+  storageBucket: "shweta-chat-app-76bda.appspot.com",
+  messagingSenderId: "371779753335",
+  appId: "1:371779753335:web:a312aaf724a501c6c27d72",
+  measurementId: "G-EQS624D6X6"
 };
-
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth();
 export const storage = getStorage();

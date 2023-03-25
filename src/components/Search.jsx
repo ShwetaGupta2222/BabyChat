@@ -33,7 +33,6 @@ function Search() {
       currentUser.uid > user.uid
         ? currentUser.uid + user.uid
         : user.uid + currentUser.uid;
-        console.log(combinedId)
       const d = new Date();
      try {
       const res = await getDoc(doc(db, "chats", combinedId));

@@ -1,4 +1,4 @@
-import { signOut, updateProfile } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, signOut, updatePassword, updateProfile } from 'firebase/auth'
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { auth, storage, db } from '../firebase';
@@ -84,17 +84,61 @@ const ChangeProfile = ({ currentUser, handleCross }) => {
 }
 const ChangePassword = ({ currentUser, handleCross }) => {
   const [display, setDisplay] = useState(false)
-  const handleSubmit=()=>{ 
-    console.log("clickeswsd")
+  const [message,setMessage] = useState("");
+  const [isChanged, setIsChanged] = useState(false)
+  const [formData, setFormData] = useState({
+    oldP: '',
+    newP: '',
+    confirmNewP: '',
+  });
+  const handleChange = (event) => {
+    setIsChanged(false)
+    const { name, value } = event.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit=async(e)=>{
+    e.preventDefault(); 
+    setIsChanged(false)
+    setMessage("")
+    console.log("clicked")
+    const oldP = e.target[0].value;
+    const newP = e.target[1].value;
+    const confirmNewP = e.target[2].value;    
+    try{
+      await signInWithEmailAndPassword(auth, currentUser.email, oldP);
+      if(newP===confirmNewP){
+        const auth = getAuth();
+        const user = auth.currentUser;
+        updatePassword(user, newP).then(() => {
+          setIsChanged(true)
+          setFormData({
+            oldP: '',
+            newP: '',
+            confirmNewP: '',
+          });
+        }).catch((error) => {
+          setMessage("something went wrong!!")
+          // console.log(error)
+        });
+      }
+      else{
+        setMessage("Confirm Password should be equal to New Password!!")
+      }
+    }
+    catch(e){
+      // console.log(e)
+      setMessage("Old Password Not Matched!!")
+    }
   }
   return (
     <div className={`change-profile ${display ? "display" : ""} change-password`}>
       <img className="cross" src={Cross} alt="" onClick={() => { setDisplay(!display); setTimeout(() => { handleCross() }, 500); }} />
       <form onSubmit={handleSubmit}>
-        <input type="password" placeholder="Old Password..." />
-        <input type="password" placeholder="New Password..." />
-        <input type="password" placeholder="Confirm New Password..." />
-        <button>Save Change</button>
+        <input type="password" required placeholder="Old Password..." name="oldP" value={formData.oldP} onChange={handleChange} />
+        <input type="password" required placeholder="New Password..." name="newP" value={formData.newP} onChange={handleChange} />
+        <input type="password" required placeholder="Confirm New Password..." name="confirmNewP" value={formData.confirmNewP} onChange={handleChange} />
+        {message && <span style={{color:"black"}}>{message}</span>}
+        <button style={{ backgroundColor: (isChanged != "") ? 'green' : '#7b96ec'}}>{isChanged?"Changed":"Save Changes"}</button>
       </form>
     </div>
   )

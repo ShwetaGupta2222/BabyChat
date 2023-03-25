@@ -6,7 +6,7 @@ import { IndexContext } from '../context/IndexContext';
 import { db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 // import { useAudio } from '../context/AudioContext';
-import { CallDialingSound,CallDisconnectSound,CallRingingSound,Typing} from '../audio'; 
+// import { CallDialingSound,CallDisconnectSound,CallRingingSound,Typing} from '../audio'; 
 
 const VideoCall = ({ chat }) => {
           const navigate = useNavigate();

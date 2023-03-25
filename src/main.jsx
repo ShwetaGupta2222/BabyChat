@@ -5,17 +5,17 @@ import App from './App'
 import { AuthContextProvider } from './context/AuthContext'
 import { ChatContextProvider } from './context/ChatContext';
 import { IndexContextProvider } from './context/IndexContext';
-import { AudioContextProvider } from './context/AudioContext';
+// import { AudioContextProvider } from './context/AudioContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <AuthContextProvider>
     <IndexContextProvider>
      <ChatContextProvider>
-         <AudioContextProvider>
+         {/* <AudioContextProvider> */}
               <React.StrictMode>
                   <App />
               </React.StrictMode>
-         </AudioContextProvider>
+         {/* </AudioContextProvider> */}
       </ChatContextProvider>
     </IndexContextProvider>
   </AuthContextProvider>

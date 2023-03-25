@@ -8,13 +8,11 @@ import { doc, updateDoc, arrayUnion,Timestamp, serverTimestamp } from "firebase/
 import {v4 as uuid} from "uuid"
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage'
 import { db, storage } from '../firebase'
-import { useAudio } from '../context/AudioContext'
 function Input() {
   const [text, setText] = useState("")
   const [img, setImg] = useState(null)
   const [pic, setPic] = useState("");
   const [err, setErr] = useState(false)
-  const {audioTyping} = useAudio();
   const {currentUser} = useContext(AuthContext)
   const {data} = useContext(ChatContext)
 
@@ -102,7 +100,7 @@ function Input() {
   }
   return (
     <div className="input">
-      <input type="text" placeholder='Type something...' value={text} onKeyDown={handleKey} onChange={(e)=>{setText(e.target.value); audioTyping.play();}}/>
+      <input type="text" placeholder='Type something...' value={text} onKeyDown={handleKey} onChange={(e)=>{setText(e.target.value);}}/>
       <div className='send'>
           <img src={Attach} alt=""/>
           <input type="file" 

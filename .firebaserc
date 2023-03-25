@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "shweta-chat-app",
-    "staging": "shweta-chat-app"
+    "default": "shweta-chat-app-76bda",
+    "staging": "shweta-chat-app-76bda"
   },
   "targets": {},
   "etags": {}
