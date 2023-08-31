@@ -20,8 +20,10 @@ function Search() {
       if(querySnapshot.empty){setUsers([])}
       let setusers = []
       querySnapshot.forEach((doc) => {
+        console.log(doc.data())
         setusers.push(doc.data())
       });
+      console.log(setusers)
       setUsers(setusers) 
     }catch(err){
       setErr(true)

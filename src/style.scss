@@ -75,7 +75,10 @@
                     color: rgb(175, 175, 175);
                 }
             }
-
+            div{
+                display: flex;
+                justify-content: center;
+            }
             label {
                 display: flex;
                 align-items: center;
@@ -94,7 +97,14 @@
                 }
 
             }
-
+            .button{
+                background-color: #c3c4c7;
+                color: white;
+                border: none;
+                padding: 10px;
+                font-weight: bold;
+                cursor: pointer;
+            }
             button {
                 background-color: #7b96ec;
                 color: white;
@@ -103,6 +113,7 @@
                 font-weight: bold;
                 cursor: pointer;
             }
+
         }
 
         p {
@@ -199,7 +210,7 @@
                             width: 50px;
                         }
                     }
-
+                    
                     button{
                         background-color: #5d5b8d;
                         color: #ddddf7;
@@ -443,6 +454,7 @@
 
             form {
                 width: 100%;
+                margin-top: 15px;
                 label {
                     display: flex;
                     align-items: center;
@@ -466,7 +478,10 @@
                         color: #5d5d82 !important;
                     }
                 }
-
+                div{
+                    display: flex;
+                    justify-content: center;
+                }
                 button {
                     background-color: #7b96ec;
                     color: white;

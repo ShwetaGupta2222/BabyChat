@@ -18,7 +18,7 @@ const DeleteChat =({setMessage,handleDelete})=>{
     const handleClick =async(e)=>{
       e.preventDefault();
       setDisplay(!display); setTimeout(() => { handleDelete()}, 500);
-       console.log(currentUser,data,"sssssssssssssss")
+       console.log(currentUser,data)
       try {
           await updateDoc(doc(db, "chats", data.chatId), {
             messages:[]
@@ -48,6 +48,7 @@ const DeleteChat =({setMessage,handleDelete})=>{
      </div>
     )
 }
+
 const Chat=()=>{
   const [message, setMessage] = useState("");
   const [isDelete, setIsDelete] = useState(false)
@@ -92,8 +93,8 @@ const Chat=()=>{
             <span>{data?.user?.displayName}</span>
             </div>
             <div className="chatIcons">
-              <div className='videoCall' onClick={handleVideoCallJoin} ></div>
-              <div className='audioCall'></div>
+              {/* <div className='videoCall' onClick={handleVideoCallJoin} ></div>
+              <div className='audioCall'></div> */}
               <div className='delete1' onClick={handleDelete}></div>
             </div>
             </>}

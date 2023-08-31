@@ -1,18 +1,20 @@
 import { getAuth, signInWithEmailAndPassword, signOut, updatePassword, updateProfile } from 'firebase/auth'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { auth, storage, db } from '../firebase';
 import More from "../img/more.png"
 import Add from "../img/add.png"
 import Check from "../img/check.png"
 import Cross from "../img/cross.webp"
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from 'firebase/firestore'
+import { collection, doc,  getDocs, updateDoc } from 'firebase/firestore'
 import { ChatContext } from '../context/ChatContext';
 import { IndexContext } from '../context/IndexContext';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-
+import { CircularProgress } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 const ChangeProfile = ({ currentUser, handleCross }) => {
   const [pic, setPic] = useState("")
+  const [loading, setLoading] = useState(false);
   const [isChanged, setIsChanged] = useState(false)
   const [imgUrl, setImgUrl] = useState(currentUser.photoURL)
   const [display, setDisplay] = useState(false)
@@ -33,6 +35,7 @@ const ChangeProfile = ({ currentUser, handleCross }) => {
     e.preventDefault();
     const newImg = e.target[0]?.files[0];
     const storageRef = ref(storage, currentUser.email);
+    setLoading(true);
     try {
       await uploadBytesResumable(storageRef, newImg).then(() => {
         getDownloadURL(storageRef).then(async (downloadURL) => {
@@ -53,12 +56,13 @@ const ChangeProfile = ({ currentUser, handleCross }) => {
             })
               if(currentUser.photoURL===downloadURL){
                 setIsChanged(true)
+                setPic("");
               }
-           
           }catch (e) { console.log(e) }
         })
       });
     }catch(e) { console.log(e) }
+    setLoading(false);
   };
 
   return (
@@ -71,13 +75,16 @@ const ChangeProfile = ({ currentUser, handleCross }) => {
           type='file' id="file"
           accept="image/*"
           onChange={handleFileChange}
-        />x
+        />
         <label htmlFor="file">
           {(pic == "") && <img src={Add} alt="" />}
           {(pic != "") && <img src={Check} alt="" />}
           <span style={{ color: (pic != "") ? 'green' : 'blue', wordBreak: 'break-all', position: 'relative' }}>{(pic != "") ? "Selected" : "Select new Avtar"}</span>
         </label>
-        <button style={{ backgroundColor: (isChanged != "") ? 'green' : '#7b96ec'}}>{isChanged?"Changed":"Save Changes"}</button>
+       
+        {loading ? <div><CircularProgress /></div> : 
+         <button style={{ backgroundColor: (isChanged != "") ? 'green' : '#7b96ec'}}>{isChanged?"Changed":"Save Changes"}</button>
+        }
       </form>
     </div>
   )
@@ -86,6 +93,7 @@ const ChangePassword = ({ currentUser, handleCross }) => {
   const [display, setDisplay] = useState(false)
   const [message,setMessage] = useState("");
   const [isChanged, setIsChanged] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     oldP: '',
     newP: '',
@@ -99,8 +107,9 @@ const ChangePassword = ({ currentUser, handleCross }) => {
   const handleSubmit=async(e)=>{
     e.preventDefault(); 
     setIsChanged(false)
+    setLoading(true);
     setMessage("")
-    console.log("clicked")
+    // console.log("clicked")
     const oldP = e.target[0].value;
     const newP = e.target[1].value;
     const confirmNewP = e.target[2].value;    
@@ -129,6 +138,7 @@ const ChangePassword = ({ currentUser, handleCross }) => {
       // console.log(e)
       setMessage("Old Password Not Matched!!")
     }
+    setLoading(false);
   }
   return (
     <div className={`change-profile ${display ? "display" : ""} change-password`}>
@@ -138,20 +148,28 @@ const ChangePassword = ({ currentUser, handleCross }) => {
         <input type="password" required placeholder="New Password..." name="newP" value={formData.newP} onChange={handleChange} />
         <input type="password" required placeholder="Confirm New Password..." name="confirmNewP" value={formData.confirmNewP} onChange={handleChange} />
         {message && <span style={{color:"black"}}>{message}</span>}
+        {loading ? <div><CircularProgress /></div> : 
         <button style={{ backgroundColor: (isChanged != "") ? 'green' : '#7b96ec'}}>{isChanged?"Changed":"Save Changes"}</button>
-      </form>
+        }
+        </form>
     </div>
   )
 }
 const DeleteAccount = ({ currentUser, handleCross }) => {
   const [display, setDisplay] = useState(false)
-  console.log("clicked")
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  // console.log("clicked")
+  const handleSubmit=()=>{
+     setLoading(true)
+     setLoading(false)
+  }
   return (
     <div className={`change-profile ${display ? "display" : ""} delete-account`}>
       <img className="cross" src={Cross} alt="" onClick={() => { setDisplay(!display); setTimeout(() => { handleCross() }, 500); }} />
-      <form >
+      <form onSubmit={handleSubmit}>
         <span className='span'>Do You really want to delete your account Permanantly?</span>
-        <button>Delete Account</button>
+        {loading ? <div style={{marginTop:"20px"}}><CircularProgress /></div> :<button>Delete Account</button>}
       </form>
     </div>
   )
@@ -206,7 +224,7 @@ function Navbar() {
       <div className={`dropdown ${dropdownHover ? "dropdown-hover" : ""} ${dropdownLeave ? "dropdown-leave" : ""}`}>
         <div onClick={changeProfile}>Change Profile</div>
         <div onClick={changePassword}>Change Password</div>
-        <div onClick={deleteAccount}>Delete Account</div>
+        {/* <div onClick={deleteAccount}>Delete Account</div> */}
       </div>
       {isChangeProfile && <ChangeProfile currentUser={currentUser} handleCross={handleCross} />}
       {isChangePassword && <ChangePassword currentUser={currentUser} handleCross={handleCross} />}

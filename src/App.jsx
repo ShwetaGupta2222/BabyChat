@@ -45,7 +45,7 @@ function App() {
             }/>
             <Route path='login' element={<Login />}/>
             <Route path='register' element={<Register />}/>
-            <Route path='room/:roomId' element={<Room />}/>
+            <Route path=':roomIdroom/' element={<Room />}/>
           </Route>
         </Routes>
       </BrowserRouter>
